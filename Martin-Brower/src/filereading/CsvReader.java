@@ -104,16 +104,40 @@ public class CsvReader
             if(isContentRow(currentLine))
             {
                 
+                int casesIndex = headerRow.get("CASES");         //6
+                int descIndex = headerRow.get("DESCRIPTION");   //13
+                int wrinIndex = headerRow.get("WRIN");          //6
+                int trailerIndex = headerRow.get("TRAILER");    //11
                 
                 for(String header : headerRow.keySet())
                 {
-                    
+                    if(header.equalsIgnoreCase("STOP"))
+                    {
+                        value = getContentData(currentLine,headerRow.get(header)-1,casesIndex-2);   //this needs work
+                    }
+                    else if(header.equalsIgnoreCase("CASES"))
+                    {
+                        value = getContentData(currentLine,headerRow.get(header),descIndex);
+                    }
+                    else if(header.equalsIgnoreCase("DESCRIPTION"))
+                    {
+                        value = getContentData(currentLine,headerRow.get(header),descIndex + 2);    //this needs work
+                    }
+                    else if(header.equalsIgnoreCase("WRIN"))
+                    {
+                        value = getContentData(currentLine,headerRow.get(header),trailerIndex);
+                    }
+                    else if(header.equalsIgnoreCase("TRAILER"))
+                    {
+                        value = getContentData(currentLine,headerRow.get(header),trailerIndex + 1);
+                    }
+                    System.out.println(value);
                 }
                 //value = getContentData(currentLine,headerRow,);
                 //contents.get(STOP).add(value);
-                //System.out.println("Inside Content Row");
+                
             }
-            previousLine = currentLine;
+            
         }
         
     }
@@ -208,15 +232,14 @@ public class CsvReader
     public String getContentData(String currentLine,int header,int secondHeader)
     {
         
-        String string = "";
+        
         int first = header;
         int second = secondHeader;
         //int indexDesc = headers.get(DESCRIPTION);
         //int indexTrailer = headers.get(TRAILER);
         //int indexWRIN = headers.get(WRIN);
-        
-        System.out.println(currentLine.substring(first,second).replace(",", "").trim());
-        return string;
+       //return "";
+        return currentLine.substring(first,second).replace(",", "").trim();
     }
 
 }
